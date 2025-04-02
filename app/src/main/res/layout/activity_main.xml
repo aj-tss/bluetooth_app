@@ -75,13 +75,7 @@
         android:id="@+id/scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bluetooth ON" />
-
-    <Button
-        android:id="@+id/off"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bluetooth OFF" />
+        android:text="Bluetooth ON/OFF" />
 
     <Button
         android:id="@+id/paired_btn"

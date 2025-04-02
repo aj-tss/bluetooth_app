@@ -51,16 +51,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView mBluetoothStatus;
     private TextView mReadBuffer;
     private Button mScanBtn;
-    private Button mOffBtn;
+    // private Button mOffBtn;
     private Button mListPairedDevicesBtn;
     private Button mDiscoverBtn;
     private ListView mDevicesListView;
     private CheckBox mLED1;
-
     private BluetoothAdapter mBTAdapter;
     private Set<BluetoothDevice> mPairedDevices;
     private ArrayAdapter<String> mBTArrayAdapter;
-
     private Handler mHandler;
     private ConnectedThread mConnectedThread;
     private BluetoothSocket mBTSocket = null;
@@ -109,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         mBluetoothStatus = findViewById(R.id.bluetooth_status);
         mReadBuffer = findViewById(R.id.read_buffer);
         mScanBtn = findViewById(R.id.scan);
-        mOffBtn = findViewById(R.id.off);
+        //mOffBtn = findViewById(R.id.off);
         mDiscoverBtn = findViewById(R.id.discover);
         mListPairedDevicesBtn = findViewById(R.id.paired_btn);
         mLED1 = findViewById(R.id.checkbox_led_1);
@@ -181,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mScanBtn.setOnClickListener(v -> bluetoothOn());
-        mOffBtn.setOnClickListener(v -> bluetoothOff());
+        //mOffBtn.setOnClickListener(v -> bluetoothOff());
         mListPairedDevicesBtn.setOnClickListener(v -> listPairedDevices());
         mDiscoverBtn.setOnClickListener(v -> discover());
     }
@@ -223,16 +221,18 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             }
-
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             enableBluetoothLauncher.launch(enableBtIntent);
             mBluetoothStatus.setText(getString(R.string.BTEnable));
             Toast.makeText(getApplicationContext(), getString(R.string.sBTturON), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.BTisON), Toast.LENGTH_SHORT).show();
+            mBTAdapter.disable(); // turn off
+            mBluetoothStatus.setText(getString(R.string.sBTdisabl));
+            Toast.makeText(getApplicationContext(), "Bluetooth turned Off", Toast.LENGTH_SHORT).show();
         }
     }
 
+    /*
     private void bluetoothOff() {
         if (mBTAdapter == null) {
             return;
@@ -244,12 +244,12 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-
         mBTAdapter.disable(); // turn off
         mBluetoothStatus.setText(getString(R.string.sBTdisabl));
         Toast.makeText(getApplicationContext(), "Bluetooth turned Off", Toast.LENGTH_SHORT).show();
-    }
 
+    }
+    */
     private void discover() {
         if (mBTAdapter == null) {
             return;
@@ -439,7 +439,6 @@ public class MainActivity extends AppCompatActivity {
         // Use the standard method instead of reflection
         return device.createRfcommSocketToServiceRecord(BT_MODULE_UUID);
     }
-
 
     // Thread class for handling Bluetooth communication
     private class ConnectedThread extends Thread {
